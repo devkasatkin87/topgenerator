@@ -4,6 +4,7 @@ namespace src\handler;
 use Datto\JsonRpc\Evaluator;
 use Datto\JsonRpc\Exceptions\ArgumentException;
 use Datto\JsonRpc\Exceptions\MethodException;
+use src\components\redis\Controller;
 
 class TopArticles implements Evaluator
 {
@@ -35,7 +36,11 @@ class TopArticles implements Evaluator
 
     public function getTopArticles(int $id, int $views)
     {
-        return $id + $views;
+        $redis = new Controller();
+        $result = $redis->addRecord($id, $views+1);
+        $result = $redis->getRecord($id);
+        return $result;
+        
     }
 
 }
