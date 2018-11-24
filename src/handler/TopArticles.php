@@ -14,15 +14,15 @@ class TopArticles implements Evaluator
      * @return mixed
      */
     public function evaluate($method, $arguments) {
-        if (count($arguments) !== 2) {
+        if (count($arguments) < 1 ) {
             throw new ArgumentException();
         }
-
-        foreach ($arguments as $argument) {
-            if (!is_numeric($argument)) {
-                throw new ArgumentException();
-            }
-        }
+//
+//        foreach ($arguments as $argument) {
+//            if (!is_numeric($argument)) {
+//                throw new ArgumentException();
+//            }
+//        }
 
         switch ($method) {
             case 'getTopArticles':
@@ -34,13 +34,27 @@ class TopArticles implements Evaluator
         return $result;
     }
 
-    public function getTopArticles(int $id, int $views)
+    public function getTopArticles(...$arguments)
     {
-        $redis = new Controller();
-        $result = $redis->addRecord($id, $views+1);
-        $result = $redis->getRecord($id);
-        return $result;
+        $params = [];
         
+        $redis = new Controller();
+        
+        foreach ($arguments as $param){
+            $params[] = $param;
+        }
+        
+        //Get id from current article
+        $currentId = array_shift($params);
+        //Get array of ids which was selected by topic
+        $ids = $params;
+        
+        $result = $redis->addRecord("article:$currentId", 1985);
+        $result = $redis->getRecord("article:$currentId");
+        $result = $redis->incrementRecord("article:$currentId");
+        $result = $redis->getRecord("article:$currentId");
+        
+        return $result;
     }
 
 }
