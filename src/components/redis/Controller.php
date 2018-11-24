@@ -21,7 +21,7 @@ class Controller {
      *      */
     public function addRecord(string $id, int $views) : bool
     {
-        $this->connection->set($id, $views);
+        $this->connection->set("article:$id", $views);
 
         return true;
                 
@@ -32,9 +32,9 @@ class Controller {
      * @param string $id
      * @return int
      *      */
-    public function getRecord(string $id) : int
+    public function getRecord(string $id)
     {
-        return $this->connection->get($id);
+        return $this->connection->get("article:$id");
     }
     
     /**
@@ -46,5 +46,16 @@ class Controller {
     {
         $this->connection->incr($id);
         return true;
+    }
+    
+    public function getViewsByIds(array $ids)
+    {
+        $views = [];
+        foreach ($ids[0] as $id){
+            $views[$id] = $this->getRecord($id);
+        }
+        
+        return $views;
+        
     }
 }
