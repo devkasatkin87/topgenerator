@@ -46,14 +46,18 @@ class TopArticles implements Evaluator
         
         //Get id from current article
         $currentId = array_shift($params);
+        
         //Get array of ids which was selected by topic
         $ids = $params;
-        //var_dump($ids);
+        
+        //Numb of Top articles
+        $top = 10;
+
         //$result = $redis->addRecord("article:$currentId", 0);
         $result = $redis->getRecord("article:$currentId");
         $result = $redis->incrementRecord("article:$currentId");
         $result = $redis->getRecord("article:$currentId");
-        $result = $redis->getViewsByIds($params);
+        $result = $redis->getSortedViewsByIds($params, $top);
         
         return $result;
     }

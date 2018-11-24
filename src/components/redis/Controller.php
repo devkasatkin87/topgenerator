@@ -48,14 +48,19 @@ class Controller {
         return true;
     }
     
-    public function getViewsByIds(array $ids)
+    public function getSortedViewsByIds(array $ids, $numbTop)
     {
         $views = [];
+        $top = [];
+        
         foreach ($ids[0] as $id){
             $views[$id] = $this->getRecord($id);
         }
-        
-        return $views;
+        arsort($views);
+        //var_dump($views);
+        $top = array_slice($views, 0, $numbTop);
+        //var_dump($top);
+        return $top;
         
     }
 }
