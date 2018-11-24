@@ -48,7 +48,12 @@ class Controller {
         return true;
     }
     
-    public function getSortedViewsByIds(array $ids, $numbTop)
+    /**
+     * @param array $ids Articles were sorted by topic
+     * @param int $numbTop
+     * @return array
+     */
+    public function getSortedViewsByIds(array $ids, int $numbTop)
     {
         $views = [];
         $top = [];
@@ -58,7 +63,7 @@ class Controller {
         }
         arsort($views);
         //var_dump($views);
-        $top = array_slice($views, 0, $numbTop);
+        $top = array_slice($views, 0, $numbTop, true);
         //var_dump($top);
         return $top;
         
