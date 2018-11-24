@@ -37,7 +37,11 @@ class Controller {
         return $this->connection->get("article:$id");
     }
     
-    /**
+    public function keyExist(string $id){
+        return $this->connection->exists("article:$id");
+    }
+
+        /**
      * 
      * @param string $id
      * 
@@ -59,12 +63,17 @@ class Controller {
         $top = [];
         
         foreach ($ids[0] as $id){
-            $views[$id] = $this->getRecord($id);
+            if ($this->keyExist($id)){
+                $views[$id] = $this->getRecord($id);
+            }
         }
+        
+//        var_dump($views);
+        
         arsort($views);
-        //var_dump($views);
+//        var_dump($views);
         $top = array_slice($views, 0, $numbTop, true);
-        //var_dump($top);
+
         return $top;
         
     }

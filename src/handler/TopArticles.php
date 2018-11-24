@@ -43,21 +43,17 @@ class TopArticles implements Evaluator
         foreach ($arguments as $param){
             $params[] = $param;
         }
-        
         //Get id from current article
         $currentId = array_shift($params);
-        
         //Get array of ids which was selected by topic
         $ids = $params;
         
         //Numb of Top articles
         $top = 10;
 
-        //$result = $redis->addRecord("article:$currentId", 0);
-        $result = $redis->getRecord("article:$currentId");
         $result = $redis->incrementRecord("article:$currentId");
-        $result = $redis->getRecord("article:$currentId");
-        $result = $redis->getSortedViewsByIds($params, $top);
+        
+        $result = $redis->getSortedViewsByIds($ids, $top);
         
         return $result;
     }
