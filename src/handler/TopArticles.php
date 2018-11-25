@@ -17,12 +17,6 @@ class TopArticles implements Evaluator
         if (count($arguments) < 1 ) {
             throw new ArgumentException();
         }
-//
-//        foreach ($arguments as $argument) {
-//            if (!is_numeric($argument)) {
-//                throw new ArgumentException();
-//            }
-//        }
 
         switch ($method) {
             case 'getTopArticles':
@@ -51,11 +45,26 @@ class TopArticles implements Evaluator
         //Numb of Top articles
         $top = 10;
 
-        $result = $redis->incrementRecord("article:$currentId");
+        $result = $redis->incrementRecord($currentId);
         
         $result = $redis->getSortedViewsByIds($ids, $top);
         
         return $result;
     }
+    
+    public function addArticle(int $id)
+    {
+        $redis = new Controller();
+        
+        $redis->addRecord($id, 0);
+    }
+    
+    public function updateArticle(int $id)
+    {
+        $redis = new Controller();
+        
+        $result = $redis->getsetRecord($id, 0);
+    }
+    
 
 }

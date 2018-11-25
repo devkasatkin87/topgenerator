@@ -8,9 +8,9 @@ services:
       image: redis:alpine
       container_name: topgenerator-redis
 
-    webservice:
+    webserver:
       image: nginx:alpine
-      container_name: topgenerator-webservice
+      container_name: topgenerator-webserver
       working_dir: /application
       volumes:
           - ./:/application

@@ -48,7 +48,7 @@ class Controller {
      */
     public function incrementRecord(string $id)
     {
-        $this->connection->incr($id);
+        $this->connection->incr("article:$id");
         return true;
     }
     
@@ -68,13 +68,17 @@ class Controller {
             }
         }
         
-//        var_dump($views);
-        
         arsort($views);
-//        var_dump($views);
+
         $top = array_slice($views, 0, $numbTop, true);
 
         return $top;
         
+    }
+    
+    public function getsetRecord($id, $value)
+    {
+        $this->connection->getset("article:$id", $value);
+        return true;
     }
 }
